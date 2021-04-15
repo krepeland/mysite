@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Title</title>
+  </head>
+  <body style="background-color: Cornsilk">
+        <h3> SIGN UP </h3>
+        {% if res < 1%}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Отправить</button>
+        </form>
+
+        <div style="color: red">
+        {% if not res == 0%}
+            <ul>
+        {% if usernameRegistered%}
+            <li><h4> Username already registered. </h4></li>
+        {% endif %}
+
+        {% if passwordsNotMatch%}
+            <li><h4> Passwords don't match. </h4></li>
+        {% endif %}
+
+        {% if not passwordsNotMatch%}
+            <li><h4> Password does not meet requirements. </h4></li>
+        {% endif %}
+            </ul>
+        {% endif %}
+        </div>
+        <h4> Already have an account? <a href="{% url 'login' %}">Log in</a>. </h4>
+        {% endif %}
+
+        <div>
+        {% if res == 1%}
+        <h4> <span style="color: green">Your account has been successfully created.</span> Now you can <a href="{% url 'login' %}">log in</a>. </h4>
+        {% endif %}
+        </div>
+  </body>
+</html>

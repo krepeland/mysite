@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Notebook</title>
+  </head>
+  <body style="background-color: Cornsilk">
+    <div align='center'>
+      <div style="text-align: right;"> <a href="{% url 'logout' %}"> logout </a> </div>
+      <h1> Welcome, {{user.username}} </h1>
+      <h1> Notebook </h1>
+
+      <h4> <a href="{% url 'new-note' %}">ADD NEW NOTE</a>. </h4>
+      <ul style="display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 0.5fr));
+      grid-auto-flow: dense; gap: 10px; list-style-type: none">
+      {% for note in notes_list %}
+        <li style="background-color: DarkSeaGreen; border: 10px; border-radius: 20px"><div>
+          <h2>{{note.title}}</h2>
+          <p>{{note.text}}</p>
+          <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn" value={{note.id}} name="deleteButton" style="background-color: LightGoldenRodYellow; margin-left: 80%;">X</button>
+          </form>
+          </form>
+        </div></li>
+      {% endfor %}
+      </ul>
+    </div>
+  </body>
+</html>
