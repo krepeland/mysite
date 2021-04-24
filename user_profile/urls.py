@@ -3,8 +3,10 @@ from . import views
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('', views.index),
+    path('', views.index, name="index"),
     path('login/', views.user_login, name="login"),
     path('logout/', views.user_logout),
     path('registration/', views.user_registration, name="registration"),
+    path('users/', views.UserList.as_view()),
+    path('users/<int:pk>/', views.UserDetail.as_view()),
 ]
