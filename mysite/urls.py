@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('user_profile.urls')),
     path('', include('notebook.urls')),
+    path('', include('pages_render.urls')),
 ]

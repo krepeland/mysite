@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_profile',
     'notebook',
+    'pages_render',
     'rest_framework',
 ]
 
