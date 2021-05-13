@@ -3,14 +3,41 @@
   <head>
     <meta charset="utf-8">
     <title>Title</title>
+
+    {% load static %}
+    <style>
+      @font-face {
+        font-family: pixel;
+        src: url({% static 'fonts/pixel-font.ttf'%});
+      }
+
+      body{
+        font-size: 20px;
+        font-family: pixel, 'Comic Sans MS';
+      }
+
+      input{
+        background-color: #e5eacc;
+        font-size: 20px;
+        font-family: pixel, 'Comic Sans MS';
+      }
+
+      button:hover{
+        background-color: white;
+      }
+
+      button{
+        background-color: #e5eacc;
+      }
+    </style>
   </head>
-  <body style="background-color: Cornsilk">
+  <body style="background-color: #d6ddb6">
         <h3> SIGN UP </h3>
         {% if res < 1%}
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Отправить</button>
+            <button type="submit">SUBMIT</button>
         </form>
 
         <div style="color: red">

@@ -1,0 +1,139 @@
+body{
+    background: #8f966c;
+    font-family: pixel, 'Comic Sans MS';
+}
+
+.header{
+    display: flex;
+    background: #8f966c;
+    padding: 20px;
+    height: 8vh;
+    text-align: center;
+    border-bottom: 5px solid rgb(120, 120, 120);
+}
+
+.logo{
+    margin-left: 30%;
+    font-size: 6vh;
+    margin-left: auto;
+    align-self: center;
+    color: #e5eacc;
+}
+
+
+.game{
+    background: #d6ddb6;
+    border-bottom: 10vh solid #d6ddb6;
+    display: flex;
+    justify-content: space-between;
+    height: 80vh;
+    border-right: 5px solid rgb(120, 120, 120);
+}
+
+.game-main{
+    display: flex;
+    width: 80vw;
+}
+
+.Log-main{
+    display: flex;
+}
+
+.username{
+    color: #e5eacc;
+}
+
+.data{
+    border-right: 5px solid rgb(120, 120, 120);
+    border-left: 5px solid rgb(120, 120, 120);
+    height: 100vh;
+    color: #ebefd7;
+    background: #b4be94;
+    width: 30vw;
+}
+
+.data ul{
+    list-style-type: none;
+}
+
+.data-detail li{
+    font-size: 2.5vw;
+    padding-left: 2vw;
+}
+
+.data-info {
+    font-size: 4vw;
+    margin: 0;
+}
+
+
+.main-button{
+    width: 20vw;
+    height: 20vw;
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.logout{
+    margin-left: auto;
+}
+
+.logout a {
+    color: #b0b690;
+    font-size: larger;
+    text-align: end;
+}
+
+.logout a:hover {
+    color: #d2d7b7;
+}
+
+.boosts{
+    border-right: 5px solid rgb(120, 120, 120);
+    border-left: 5px solid rgb(120, 120, 120);
+    height: 100vh;
+    color: #ebefd7;
+    background: #b4be94;
+    width: 20vw;
+}
+
+.boosts li{
+    padding: 10px;
+    list-style-type: none;
+}
+
+.boosts-list{
+    padding: 0;
+    margin: 0;
+}
+
+.boosts-list-item{
+    display: flex;
+    border-bottom: 5px solid rgb(120, 120, 120);
+}
+
+.clickable{
+  opacity: 0.8;
+}
+
+.clickable:hover{
+  opacity: 0.9;
+  transform: rotate(-1deg);
+}
+
+.clickable:active{
+  opacity: 1;
+  transform: rotate(3deg);
+}
+
+.boost-name, .boost-level, .boost-cost{
+    font-size: 2vw;
+}
+
+
+.boost{
+  height: 10vw;
+  width: 10vw;
+}

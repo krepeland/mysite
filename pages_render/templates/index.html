@@ -1,27 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <script>
-  async function callClick(){
-      let response = await fetch('http://localhost:8000/click/',{
-      method: 'GET'
-    });
-    let answer = await response.json();
-    document.getElementById("data").innerHTML = answer;
-  }
-
-  </script>
-
+  {% load static %}
   <head>
-    <meta charset="utf-8">
-    <title>Title </title>
+      <script src="{% static 'js/index.js' %}"></script>
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
+      <meta charset="utf-8">
+      <title>Title </title>
+      <style>
+        html { overflow:  hidden; }
+
+        @font-face {
+          font-family: pixel;
+          src: url({% static 'fonts/pixel-font.ttf'%});
+        }
+      </style>
   </head>
-  <body style="background-color: Cornsilk">
-    <div align="center">
-      <header><h3> Welcome, {{user.username}}! </h3>
-      <div class="logout"><a href="/logout">LOGOUT</a></div>
-      <h1>You have <div id="data">{{mainCycle.coinsCount}}</div> coins </h1>
-      </header>
-      <button onclick="callClick()"> <h1> Click me </h1> </button>
+  <body onload="getUser({{user.id}})">
+    <div class="header">
+        <div class="logo">BEAVER CLICKER |</div>
+        <div align="center"><h3 class="username"> Welcome, <span id="user">%user%<span/>!</h3></div>
+        <div class="logout"><a href="/logout">LOGOUT</a> </div>
+    </div>
+    <div class="game">
+        <section class="game-main">
+            <aside class="data">
+                <div class="data-info" align="center">Stats:</div>
+                <ul class = data-detail>
+                    <li>Logs: <span id="data">%coins%</span></li>
+                    <li>Beavers: <span id="beavers-count">1</span></li>
+                    <li>Bite-power: <span id="clickPower">{{mainCycle.clickPower}}</span></li>
+                </ul>
+            </aside>
+            <input class="main-button clickable" type="image" class="clickable" src="{% static 'images/LogBig.png' %}" onclick="callClick()" />
+        </section>
+
+        <aside class="boosts">
+            <ul class="boosts-list">
+                <li class="boosts-list-item">
+                    <span>
+                        <div class="boost-name"><strong>Beaver bite</strong></div>
+                        <div class="boost-level">Level: <span id="boostLevel">%boostLevel1%</span></div>
+                        <div class="boost-cost">Cost <span id="boostCost">%boostCost1%</span></div>
+                    </span>
+                    <input type="image" class="clickable boost" src="{% static 'images/Beaver_static.png' %}" onclick="buyBoost({{user.id}}, 0)" />
+                </li>
+            </ul>
+        </aside>
     </div>
   </body>
 </html>
