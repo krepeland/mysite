@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
 from .serializers import UserSerializer, UserSerializerDetail, CycleSerializer, CycleSerializerDetail, BoostSerializer, BoostSerializerDetail
 from rest_framework import generics
 from .models import MainCycle, Boost
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+import services
 
 
 class UserList(generics.ListAPIView):
@@ -37,29 +39,15 @@ class BoostDetail(generics.RetrieveAPIView):
     serializer_class = BoostSerializerDetail
 
 
+@api_view(['GET'])
 def callClick(request):
-    user = User.objects.filter(id=request.user.id)
-    mainCycle = MainCycle.objects.filter(user=request.user)[0]
-    mainCycle.Click()
-    mainCycle.save()
-    return HttpResponse(mainCycle.coinsCount)
+    data = services.clicker_services.call_click(request)
+    return Response(data)
 
-
+@api_view(['POST'])
 def buyBoost(request):
-    mainCycle = MainCycle.objects.filter(user=request.user)[0]
-    if len(Boost.objects.filter(mainCycle=mainCycle)) == 0:
-        if mainCycle.coinsCount < 10:
-            return HttpResponse(mainCycle.clickPower)
-        boost = Boost()
-        boost.mainCycle = mainCycle
-        boost.Upgrade()
-        boost.save()
-    else:
-        boost = Boost.objects.filter(mainCycle=mainCycle)[0]
-        if mainCycle.coinsCount < boost.price:
-            return HttpResponse(mainCycle.clickPower)
-        boost.mainCycle = mainCycle
-        boost.Upgrade()
-        boost.save()
-    mainCycle.save()
-    return HttpResponse(mainCycle.clickPower)
+    click_power, coins_count, level, price = services.clicker_services.buy_boost(request)
+    return Response({'clickPower': click_power,
+                     'coinsCount': coins_count,
+                     'level': level,
+                     'price': price})

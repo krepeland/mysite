@@ -29,10 +29,10 @@ class CycleSerializerDetail(serializers.ModelSerializer):
 class BoostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Boost
-        fields = ['id']
+        fields = ['id', 'boost_id', 'level', 'power', 'price']
 
 
 class BoostSerializerDetail(serializers.ModelSerializer):
     class Meta:
         model = Boost
-        fields = ['id', 'level', 'power', 'price']
+        fields = ['id', 'boost_id', 'level', 'power', 'price']

@@ -7,8 +7,8 @@
       <meta charset="utf-8">
       <title>Title </title>
       <style>
-        html { overflow:  hidden; }
 
+        html { overflow:  hidden; }
         @font-face {
           font-family: pixel;
           src: url({% static 'fonts/pixel-font.ttf'%});
@@ -25,25 +25,16 @@
         <section class="game-main">
             <aside class="data">
                 <div class="data-info" align="center">Stats:</div>
-                <ul class = data-detail>
+                <ul class="data-detail">
                     <li>Logs: <span id="data">%coins%</span></li>
-                    <li>Beavers: <span id="beavers-count">1</span></li>
-                    <li>Bite-power: <span id="clickPower">{{mainCycle.clickPower}}</span></li>
+                    <li>Logs per click: <span id="clickPower">{{mainCycle.clickPower}}</span></li>
                 </ul>
             </aside>
             <input class="main-button clickable" type="image" class="clickable" src="{% static 'images/LogBig.png' %}" onclick="callClick()" />
         </section>
 
         <aside class="boosts">
-            <ul class="boosts-list">
-                <li class="boosts-list-item">
-                    <span>
-                        <div class="boost-name"><strong>Beaver bite</strong></div>
-                        <div class="boost-level">Level: <span id="boostLevel">%boostLevel1%</span></div>
-                        <div class="boost-cost">Cost <span id="boostCost">%boostCost1%</span></div>
-                    </span>
-                    <input type="image" class="clickable boost" src="{% static 'images/Beaver_static.png' %}" onclick="buyBoost({{user.id}}, 0)" />
-                </li>
+            <ul class="boosts-list AutoDiv" id="boosts-list">
             </ul>
         </aside>
     </div>
