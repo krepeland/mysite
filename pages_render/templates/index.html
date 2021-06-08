@@ -27,7 +27,8 @@
                 <div class="data-info" align="center">Stats:</div>
                 <ul class="data-detail">
                     <li>Logs: <span id="data">%coins%</span></li>
-                    <li>Logs per click: <span id="clickPower">{{mainCycle.clickPower}}</span></li>
+                    <li>Logs/click: <span id="clickPower">{{mainCycle.clickPower}}</span></li>
+                    <li>Logs/second: <span id="auto_click_power"> {{mainCycle.auto_click_power}} </span></li>
                 </ul>
             </aside>
             <input class="main-button clickable" type="image" class="clickable" src="{% static 'images/LogBig.png' %}" onclick="callClick()" />

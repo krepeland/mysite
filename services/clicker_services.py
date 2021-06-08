@@ -12,6 +12,17 @@ def main_page(request):
         return (True, 'login', {})
 
 
+def set_main_cycle(request):
+    mainCycle = MainCycle.objects.get(user=request.user)
+    print(request.data['coinsCount'])
+    is_level_up = mainCycle.set_main_cycle(int(request.data['coinsCount']))
+    boosts_query = Boost.objects.filter(mainCycle=mainCycle)
+    boosts = BoostSerializer(boosts_query, many=True).data
+    auto_click_power = mainCycle.auto_click_power
+    mainCycle.save()
+    return (mainCycle.coinsCount, boosts, auto_click_power)
+
+
 def call_click(request):
     user = User.objects.filter(id=request.user.id)
     mainCycle = MainCycle.objects.filter(user=request.user)[0]
@@ -31,4 +42,5 @@ def buy_boost(request):
     if cycle.coinsCount >= boost.price:
         click_power, coins_count, level, price = boost.Upgrade()
     boost.save()
-    return (click_power, coins_count, level, price)
+    boosts = BoostSerializer(Boost.objects.filter(mainCycle=cycle), many=True).data
+    return (click_power, coins_count, level, price, boosts, cycle.auto_click_power)

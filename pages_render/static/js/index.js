@@ -1,13 +1,9 @@
 async function callClick(){
-  let response = await fetch('/click/',{
-    method: 'GET'
-  });
-  let answer = await response.json();
-  document.getElementById("data").innerHTML = answer.coinsCount;
-  console.log(answer.boosts);
-  if(answer.boosts){
-    renderBoosts(answer.boosts);
-  }
+  const coins_counter = document.getElementById('data')
+  let coins_value = parseInt(coins_counter.innerText)
+  const click_power = document.getElementById('clickPower').innerText
+  coins_value += parseInt(click_power)
+  document.getElementById("data").innerHTML = coins_value
 }
 
 let boosts_names = ["Smol beaver", "Beaver", "Big beaver", "Axebeaver", "Chains-Z-Z-Z-saw", "Log manipulator",
@@ -26,10 +22,13 @@ async function getUser(id){
   let cycle = await getCycle.json();
   document.getElementById("data").innerHTML = cycle['coinsCount'];
 
-  call_boost_render();
+  set_auto_click()
+  set_send_coins_interval()
+  call_boost_render(answer.cycle);
 }
 
 function buyBoost(boost_id) {
+    send_coins()
 
     const csrftoken = getCookie('csrftoken')
 
@@ -49,9 +48,11 @@ function buyBoost(boost_id) {
             return Promise.reject(response)
         }
     }).then(data => {
+        console.log(data);
         document.getElementById("data").innerHTML = data['coinsCount'];
         document.getElementById("clickPower").innerHTML = data['clickPower'];
-        call_boost_render()
+        document.getElementById("auto_click_power").innerHTML = data['auto_click_power'];
+        renderBoosts(data['boosts'])
     })
 
 }
@@ -71,8 +72,8 @@ function getCookie(name) {
   return cookieValue;
 }
 
-async function call_boost_render(){
-    let boost_request = await fetch('/boosts/', {
+async function call_boost_render(cycle){
+    let boost_request = await fetch('/boosts/' + cycle, {
         method :'GET'
     })
     let boosts = await boost_request.json();
@@ -89,20 +90,73 @@ function renderBoosts(boosts){
 }
 
 function addBoost(parent, boost){
+    if(boost.boost_id >= boosts_names.length)
+        return
     const boostHolder = document.createElement('li')
-    boostHolder.setAttribute('class', 'boosts-list-item')
+
+    boost_auto = ""
+    boost_type = "Power"
+    if (boost.boost_id % 3 == 0){
+        boost_auto = "boosts-list-item-auto"
+        boost_type = "Power/S"
+    }
+
+    boostHolder.setAttribute('class', 'boosts-list-item ' + boost_auto)
     if (+document.getElementById("data").innerHTML < boost.price)
         boostHolder.setAttribute('class', 'boosts-list-item disabled');
+
 
     boostHolder.innerHTML = `
     <span>
         <div class="boost-name"><strong>${boosts_names[(boost.boost_id) % boosts_names.length]}</strong></div>
         <div class="boost-level">Count: <span id="boostLevel">${boost.level}</span></div>
         <div class="boost-price">Cost: <span id="boostPrice">${boost.price}</span></div>
-        <div class="boost-power">Power: <span id="boostPower">${boost.power}</span></div>
+        <div class="boost-power">${boost_type}: <span id="boostPower">${boost.power}</span></div>
     </span>
-    <input type="image" class="clickable boost boost_${boost.boost_id}" src="https://psv4.userapi.com/c534536/u190403673/docs/d34/bf8ed4b458a2/alpha.png?extra=lI_8Bs3huO5aSxZbjNJInsHh3JQ1GRAx7MMDnKova3tc8rsKGvWpqHR8jSJwBMmFYhUfqJjx4pe0TodyXpesvyCTzfedhzNWfZe5nrEfyzs9Nz3YVHMV5P8SKQRn--ayi4_cEu4269IANUgfL_mpy_3-" onclick="buyBoost(${boost.boost_id})" />
+    <input type="image" class="clickable boost boost_${boost.boost_id}" src="https://psv4.userapi.com/c534536/u190403673/docs/d34/cae4a6091479/alpha.png?extra=Yi6Jk0T5Tjn9BFVbDoxBC7nXsIo3MyrBVUe6qIWLHTBE0_FDuDmy8G2_5kcUnBrQ45TxDy4eWlS6nct_vsBCtYwrKl_2MPckAlra7HK4kwfAkpYsuRlJ5F1OTAOJ1_Y_mCwO8MNuN7ULjF9ns4xRQqmK" onclick="buyBoost(${boost.boost_id})" />
     `
 
     parent.appendChild(boostHolder)
+}
+
+function set_auto_click() {
+    setInterval(function() {
+        const coins_counter = document.getElementById('data')
+        let coins_value = parseInt(coins_counter.innerText)
+
+        const auto_click_power = document.getElementById('auto_click_power').innerText
+        coins_value += parseInt(auto_click_power)
+        document.getElementById("data").innerHTML = coins_value;
+    }, 1000)
+}
+
+function set_send_coins_interval() {
+    setInterval(function() { send_coins() }, 2000)
+}
+
+function send_coins() {
+        const csrftoken = getCookie('csrftoken')
+        const coins_counter = document.getElementById('data').innerText
+        console.log(coins_counter)
+        fetch('/set_main_cycle/', {
+            method: 'POST',
+            headers: {
+                "X-CSRFToken": csrftoken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                coinsCount: coins_counter,
+            })
+        }).then(response => {
+            if (response.ok) {
+                return response.json()
+            } else {
+                return Promise.reject(response)
+            }
+        }).then(data => {
+            console.log(data)
+            if (data.boosts)
+              renderBoosts(data.boosts)
+            document.getElementById("auto_click_power").innerHTML = data['auto_click_power'];
+        }).catch(err => console.log(err))
 }

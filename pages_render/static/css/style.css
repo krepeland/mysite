@@ -139,6 +139,9 @@ body{
     font-size: 1.5vw;
 }
 
+.boosts-list-item-auto{
+    background-color: #94BDBE;
+}
 
 .boost{
   height: 10vw;

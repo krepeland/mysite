@@ -30,8 +30,10 @@ class CycleDetail(generics.RetrieveAPIView):
 
 
 class BoostList(generics.ListAPIView):
-    queryset = Boost.objects.all()
+    queryset = Boost
     serializer_class = BoostSerializer
+    def get_queryset(self):
+        return Boost.objects.filter(mainCycle=self.kwargs['mainCycle'])
 
 
 class BoostDetail(generics.RetrieveAPIView):
@@ -46,8 +48,17 @@ def callClick(request):
 
 @api_view(['POST'])
 def buyBoost(request):
-    click_power, coins_count, level, price = services.clicker_services.buy_boost(request)
+    click_power, coins_count, level, price, boosts, auto_click_power = services.clicker_services.buy_boost(request)
     return Response({'clickPower': click_power,
                      'coinsCount': coins_count,
                      'level': level,
-                     'price': price})
+                     'price': price,
+                     'boosts': boosts,
+                     'auto_click_power': auto_click_power})
+
+@api_view(['POST'])
+def set_main_cycle(request):
+    coinsCount, boosts, auto_click_power = services.clicker_services.set_main_cycle(request)
+    return Response({"coinsCount": coinsCount,
+                     "boosts": boosts,
+                     'auto_click_power': auto_click_power})
